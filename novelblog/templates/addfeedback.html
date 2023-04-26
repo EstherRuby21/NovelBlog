@@ -1,0 +1,36 @@
+{% extends 'base.html' %} 
+
+    {% block content %}
+
+        <div class="container">
+            <form method="POST">
+                <div class="form-group">
+                    {{form.hidden_tag()}}
+                </div>
+                <div class="form-group">
+                    {{form.feedback.label(class='form-label')}}{{form.feedback(class='form-control')}}
+                </div>
+                <div class="form-group">
+                    {{form.submit()}}
+                </div>
+
+            </form>
+
+            {% if feedback: %}
+                <h4>Comments ({{count}})</h4>
+                {% for comment in feedback %} 
+                    <p class="bg-light text-dark" style="display: inline;">{{comment.feedback}} </p>
+                    <p style="color:darkgray; line-height: 1px;">{{comment.user_name}}
+                        {% if comment.user_name == current_user.username %}
+                            <a href="{{url_for('novels.editfeedback', novelId=comment.novel_id, commentId=comment.id)}}"><i class="bi bi-pencil"></i></a>
+                            &nbsp;&nbsp;
+                            <a href="{{url_for('novels.deletefeedback', novelId=comment.novel_id, commentId=comment.id)}}"><i class="bi bi-trash3"></i></a>
+                        {% endif %}
+                    </p>
+                    <hr />
+                {% endfor %}
+            {% endif %}
+
+        </div>
+
+    {% endblock %}
